@@ -1,0 +1,18 @@
+.box{
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: left;
+}
+
+.box>p{
+    font-weight: bold;
+}
+
+.box>h2{
+    text-decoration: underline;
+}
+
+.container{
+    border:1px solid red
+}
