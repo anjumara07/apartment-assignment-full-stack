@@ -1,0 +1,24 @@
+{
+  "name": "apartment-assignment-full-stack",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anjumara07/apartment-assignment-full-stack.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/anjumara07/apartment-assignment-full-stack/issues"
+  },
+  "homepage": "https://github.com/anjumara07/apartment-assignment-full-stack#readme",
+  "dependencies": {
+    "express": "^4.17.3",
+    "mongoose": "^6.3.0"
+  }
+}
