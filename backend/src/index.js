@@ -20,8 +20,8 @@ const app = express();
 app.use(cors(corsOptions));
 app.use(express.json());
 
-app.use("/login",login);
-app.use("/register",register);
+app.post("/register", register);
+app.post("/login", login);
 
 app.use("/apartments",apartmentController)
 app.use("/managers",managerController)

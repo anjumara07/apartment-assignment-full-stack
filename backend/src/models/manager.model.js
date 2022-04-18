@@ -1,39 +1,32 @@
 const mongoose = require("mongoose");
-
 const bcrypt = require("bcryptjs");
 
-const managerSchema = new mongoose.Schema({
-    name: {type:String,required:true},
-    email: {type:String,required:true},
-    password: {type:String,required:true},
-    phone: {type:Number,required:true},
-    gender:{type:String,required:true},
+const managerSchema = new mongoose.Schema(
+  {
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+  },
+  {
+    versionKey: false,
+    timestamps: true,
+  }
+);
 
- },{
-     versionKey:false,
-     timestamps:true
- })
+managerSchema.pre("save", function (next) {
+  if (!this.isModified("password")) return next();
 
-//  hash the password before saving
-// managerSchema.pre('save', function(next){
- managerSchema.pre("save", function(next){
+  // secret , salt => sdkfhsdkfh , secret + sdkfhsdkfh => dskfgkcskdfgsdkfsdf
+  // salt
+  // hashing rounds =>
+  var hash = bcrypt.hashSync(this.password, 8);
+  this.password = hash;
+  return next();
+});
 
-    // if password is not modified then return
-    if(!this.isModified('password')) return next();
-  
-    const hash = bcrypt.hashSync(this.password,6);
-    this.password = hash;
-    return next();
- })
+managerSchema.methods.checkPassword = function (password) {
+  return bcrypt.compareSync(password, this.password);
+};
 
-// function comparePassword(password){
-// to compare the password while login
-managerSchema.methods.comparePassword = function(password){
-    // if same then return true
-    // else return false
-    return bcrypt.compareSync(password,this.password);
-}
+const Manager = mongoose.model("manager", managerSchema); // manager => managers
 
-const Manager = mongoose.model("Manager",managerSchema);
-
-module.exports = Manager; 
+module.exports = Manager;

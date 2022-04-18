@@ -1,73 +1,66 @@
+require("dotenv").config();
 const jwt = require("jsonwebtoken");
-require("dotenv").config()
-
-const Manager = require("../models/manager.model");
+const User = require("../models/manager.model");
 
 const newToken = (user) => {
   return jwt.sign({ user }, process.env.JWT_SECRET_KEY);
 };
 
-const login = async (req,res) => {
-    try{
-      const { email, password } = req.body;
-      // check if email and password is valid
-      const manager = await Manager.findOne({ email });
+const register = async (req, res) => {
+  try {
+    // we will try to find the user with the email provided
+    let user = await User.findOne({ email: req.body.email }).lean().exec();
 
-      // if email is not found
-      // return error message
-      if (!manager) {
-        return res.status(400).json({
-          message: "Invalid email or password",
-        });
-      }
+    // if the user is found then it is an error
+    if (user)
+      return res.status(400).send({ message: "Please try another email" });
 
-      // check password with store password
+    // if user is not found then we will create the user with the email and the password provided
+    user = await User.create(req.body);
 
-      const isMatch = await manager.comparePassword(password);
+    // user = new User()
+    // user.email = req.body.email
+    // user.password = req.body.password
+    // user.save();
 
-      // if password is not correct
-      // return error message
-      if (!isMatch) {
-        return res.status(400).json({
-          message: "Invalid email or password",
-        });
-      }
+    // then we will create the token for that user
+    const token = newToken(user);
 
-        // if everything is correct
-        // generate new token and return it
-      const token = newToken(manager);
+    // then return the user and the token
 
-      return res.status(200).send({ token, manager });
-    }catch(e){
-        console.log(e);
-    }
-}
+    res.send({ user, token });
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+};
 
-const register = async (req,res) => {
-    try{
-        const {email} = req.body;
+const login = async (req, res) => {
+  try {
+    // we will try to find the user with the email provided
+    const user = await User.findOne({ email: req.body.email });
 
-        // check if email is already exist
-        const manager = await Manager.findOne({email});
+    // If user is not found then return error
+    if (!user)
+      return res
+        .status(400)
+        .send({ message: "Please try another email or password" });
 
-        // if email is already exist
-        // return error message
-        if(manager){
-            return res.status(400).json({
-                message:"Email is already exist"
-            })
-        }
+    // if user is found then we will match the passwords
+    const match = user.checkPassword(req.body.password);
 
-        // if email is not exist
-        // create new manager
+    if (!match)
+      return res
+        .status(400)
+        .send({ message: "Please try another email or password" });
 
-        const newManager = Manager.create(req.body).lean().exec();
+    // then we will create the token for that user
+    const token = newToken(user);
 
-        return res.status(200).send(newManager);
+    // then return the user and the token
+    res.send({ user, token });
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+};
 
-    }catch(e){
-        console.log(e);
-    }
-}
-
-module.exports = { login, register };
+module.exports = { register, login };
