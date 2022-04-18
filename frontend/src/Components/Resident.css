@@ -16,3 +16,8 @@
 .container{
     border:1px solid red
 }
+
+.searchBox{
+    padding:10px 20px;
+    margin-right: 20px;
+}

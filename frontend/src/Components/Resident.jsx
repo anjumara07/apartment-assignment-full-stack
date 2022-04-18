@@ -25,18 +25,6 @@ export function Resident() {
       })
   }
 
-  const handleSort = (data) =>{
-        if(data==='asc'){
-            let asc = resident.sort((a,b)=>a.flatno - b.flatno)
-            setResident([...asc]);
-        }
-        else{
-            let desc = resident.sort((a,b)=>b.flatno - a.flatno)
-            setResident([...desc]);
-        }
-  }
-
-
 
   return (
 
