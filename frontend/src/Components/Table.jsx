@@ -63,12 +63,30 @@ export function BasicTable() {
        
   }
 
+  const handleFilter = (e) =>{
+       axios.get(`http://localhost:2345/apartments`).then((res)=>{
+        //   console.log(res.data)
+          let data = res.data;
+          let ans = data.filter((el)=>{
+               return el.ownername.includes(e.target.value)
+          })
+        //   console.log(ans)
+          if(ans){
+              setApartment([...ans])
+          }
+          if(e.target.value === ""){
+              getData()
+          }
+      })
+  }
+
 
   return (
 
       <>
         <div style={{margin:'30px'}}>
                <input className="searchBox" onChange={handleSearch} placeholder="Search Here By Block" />
+               <input className="searchBox" onChange={handleFilter} placeholder="Filter Here..." />
                <Button style={{marginRight:'20px'}} variant="contained">Filter by Resident</Button>
                <Button style={{marginRight:'20px'}} variant="contained" onClick={()=>{handleSort('asc')}}>Sort Inc. by Flat No.</Button>
                <Button variant="contained" onClick={()=>{handleSort('desc')}}>Sort Dec. by Flat No.</Button>
