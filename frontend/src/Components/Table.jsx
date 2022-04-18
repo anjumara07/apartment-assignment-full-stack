@@ -23,7 +23,7 @@ export function BasicTable() {
   },[page])
 
   const getData = () =>{
-      axios.get(`http://localhost:2345/apartments?_limit=3&_page=${page}`).then((res)=>{
+      axios.get(`https://apartment-manager-065.herokuapp.com/residents?_limit=3&_page=${page}`).then((res)=>{
         //   console.log(res.data)
           setApartment([...res.data])
       })
@@ -31,11 +31,11 @@ export function BasicTable() {
 
   const handleSort = (data) =>{
         if(data==='asc'){
-            let asc = apartment.sort((a,b)=>a.flatno - b.flatno)
+            let asc = apartment.sort((a,b)=>a.apartmentId.flatno - b.apartmentId.flatno)
             setApartment([...asc]);
         }
         else{
-            let desc = apartment.sort((a,b)=>b.flatno - a.flatno)
+            let desc = apartment.sort((a,b)=>b.apartmentId.flatno - a.apartmentId.flatno)
             setApartment([...desc]);
         }
   }
@@ -46,11 +46,11 @@ export function BasicTable() {
   }
 
   const handleSearch = (e) =>{
-      axios.get(`http://localhost:2345/apartments`).then((res)=>{
+      axios.get(`https://apartment-manager-065.herokuapp.com/residents`).then((res)=>{
         //   console.log(res.data)
           let data = res.data;
           let ans = data.filter((el)=>{
-              return el.block === e.target.value
+              return el.apartmentId.block === e.target.value
           })
         //   console.log(ans)
           if(ans){
@@ -64,11 +64,11 @@ export function BasicTable() {
   }
 
   const handleFilter = (e) =>{
-       axios.get(`http://localhost:2345/apartments`).then((res)=>{
+       axios.get(`https://apartment-manager-065.herokuapp.com/residents`).then((res)=>{
         //   console.log(res.data)
           let data = res.data;
           let ans = data.filter((el)=>{
-               return el.ownername.includes(e.target.value)
+               return el.apartmentId.ownername.includes(e.target.value)
           })
         //   console.log(ans)
           if(ans){
@@ -86,7 +86,7 @@ export function BasicTable() {
       <>
         <div style={{margin:'30px'}}>
                <input className="searchBox" onChange={handleSearch} placeholder="Search Here By Block" />
-               <input className="searchBox" onChange={handleFilter} placeholder="Filter Here..." />
+               <input className="searchBox" onChange={handleFilter} placeholder=" Owner Filter Here..." />
                <Button style={{marginRight:'20px'}} variant="contained">Filter by Resident</Button>
                <Button style={{marginRight:'20px'}} variant="contained" onClick={()=>{handleSort('asc')}}>Sort Inc. by Flat No.</Button>
                <Button variant="contained" onClick={()=>{handleSort('desc')}}>Sort Dec. by Flat No.</Button>
@@ -105,10 +105,10 @@ export function BasicTable() {
             <TableBody>
             {apartment.map((row) => (
                     <TableRow key={row._id} onClick={()=>{handleRequest(row._id)}}>
-                        <TableCell align="center" component="th" scope="row">{row.ownername}</TableCell>
-                        <TableCell align="center">{row.flatno}</TableCell>
-                        <TableCell align="center">{row.block}</TableCell>
-                        <TableCell align="center">{row.totalresident}</TableCell>
+                        <TableCell align="center" component="th" scope="row">{row.apartmentId.ownername}</TableCell>
+                        <TableCell align="center">{row.apartmentId.flatno}</TableCell>
+                        <TableCell align="center">{row.apartmentId.block}</TableCell>
+                        <TableCell align="center">{row.apartmentId.totalresident}</TableCell>
                     </TableRow>
             ))}
             </TableBody>

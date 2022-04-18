@@ -21,4 +21,14 @@ router.get("/",async(req, res)=>{
     }
 })
 
+router.get("/:id", async (req, res) => {
+  try {
+      
+    const residents = await Resident.findById(req.params.id).populate("apartmentId").lean().exec();
+    res.status(200).send(residents);
+  } catch (err) {
+    return res.status(500).send(err.message);
+  }
+});
+
 module.exports = router;

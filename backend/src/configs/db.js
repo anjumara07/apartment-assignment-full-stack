@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
-
+require("dotenv").config();
 module.exports = ()=>{
-    return mongoose.connect("mongodb+srv://anjum:anjum123@cluster0.0q4yj.mongodb.net/apartment");
+    return mongoose.connect(process.env.DBCONNECTION);
 };
 
 
