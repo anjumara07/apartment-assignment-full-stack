@@ -24,8 +24,9 @@ export function Resident() {
   return (
 
       <>
-        {resident.name?<div className="box" style={{width:'300px' , margin:'auto' , marginTop:'50px'}} key={resident._id}>
-          <h2>Resident Details</h2>
+        {resident.name?<div className="box" style={{width:'300px' , margin:'auto' , marginTop:'30px'}} key={resident._id}>
+          <h2>Details</h2>
+          <img src={resident.apartmentId.image} alt="" width="300" />
           <p>Name : {resident.name}</p>
           <p>Age : {resident.age}</p>
           <p>Gender : {resident.gender}</p>
