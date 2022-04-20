@@ -12,9 +12,8 @@ export function Resident() {
           
 
   useEffect(()=>{
-    // console.log(id)
      axios.get(`https://apartment-manager-065.herokuapp.com/residents/${id}`).then((res)=>{
-          console.log(res.data)
+          // console.log(res.data)
           setResident(res.data)
       })
   },[])
@@ -24,7 +23,7 @@ export function Resident() {
   return (
 
       <>
-        {resident.name?<div className="box" style={{width:'300px' , margin:'auto' , marginTop:'30px'}} key={resident._id}>
+        {resident.name?<div className="box" style={{width:'300px' , margin:'auto' , marginTop:'30px' , marginBottom:'40px'}} key={resident._id}>
           <h2>Details</h2>
           <img src={resident.apartmentId.image} alt="" width="300" />
           <p>Name : {resident.name}</p>
