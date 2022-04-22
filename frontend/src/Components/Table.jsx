@@ -14,7 +14,6 @@ import {addData} from '../Resident/action'
 import axios from 'axios';
 import {useNavigate} from "react-router-dom";
 
-
 export function BasicTable() {
   const [page,setPage] = useState(1)
   const datasets = useSelector((store)=>store.data.data);
@@ -86,12 +85,10 @@ export function BasicTable() {
 
 
   return (
-
       <>
         <div style={{margin:'30px'}}>
                <input className="searchBox" onChange={handleSearch} placeholder="Search Here By Block" />
                <input className="searchBox" onChange={handleFilter} placeholder="Filter Type Here..." />
-               <Button style={{marginRight:'20px'}} variant="contained">Filter by Resident</Button>
                <Button style={{marginRight:'20px'}} variant="contained" onClick={()=>{handleSort('asc')}}>Sort Inc. by Flat No.</Button>
                <Button variant="contained" onClick={()=>{handleSort('desc')}}>Sort Dec. by Flat No.</Button>
         </div>

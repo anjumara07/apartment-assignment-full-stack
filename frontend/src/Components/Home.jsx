@@ -1,13 +1,14 @@
 import * as React from 'react';
-// import ReactDOM from 'react-dom';
-import Button from '@mui/material/Button';
-import {BasicTable} from './Table'
+import {BasicTable} from './Table';
+import {useSelector} from 'react-redux';
+import {Login} from './Login';
 
 
 export const Home = () =>{
+    const isLoggedIn = useSelector((store) => store.reducer.isLoggedIn)
     return (
         <>           
-           <BasicTable /> 
+           {isLoggedIn ? <BasicTable /> : <Login />}
         </>
     )
 }

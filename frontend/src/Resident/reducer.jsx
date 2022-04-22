@@ -5,9 +5,8 @@ const initState = {
 }
 
 export const residentReducer = (store = initState, { type, payload }) => {
-  console.log(store);
+//   console.log(store);
   switch (type) {
-    //  Todos:
     case RESIDENT_DATA:
       return { ...store, data: payload };
     default:
