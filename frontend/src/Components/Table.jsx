@@ -9,34 +9,36 @@ import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 
 import {useState , useEffect} from 'react';
+import {useDispatch , useSelector} from 'react-redux';
+import {addData} from '../Resident/action'
 import axios from 'axios';
 import {useNavigate} from "react-router-dom";
 
 
 export function BasicTable() {
-
-  const [apartment,setApartment] = useState([])
   const [page,setPage] = useState(1)
+  const datasets = useSelector((store)=>store.data.data);
+  const dispatch = useDispatch();
 
   useEffect(()=>{
       getData();
   },[page])
 
   const getData = () =>{
-      axios.get(`https://apartment-manager-065.herokuapp.com/residents?_limit=3&_page=${page}`).then((res)=>{
-        //   console.log(res.data)
-          setApartment([...res.data])
+      axios.get(`https://apartment-manager-065.herokuapp.com/residents?_limit=3&_page=${page}`).then(({data})=>{
+        //   console.log(data)
+          dispatch(addData(data))
       })
   }
 
   const handleSort = (data) =>{
         if(data==='asc'){
-            let asc = apartment.sort((a,b)=>a.apartmentId.flatno - b.apartmentId.flatno)
-            setApartment([...asc]);
+            let asc = datasets.sort((a,b)=>a.apartmentId.flatno - b.apartmentId.flatno)
+            dispatch(addData([...asc]));
         }
         else{
-            let desc = apartment.sort((a,b)=>b.apartmentId.flatno - a.apartmentId.flatno)
-            setApartment([...desc]);
+            let desc = datasets.sort((a,b)=>b.apartmentId.flatno - a.apartmentId.flatno)
+            dispatch(addData([...desc]));
         }
   }
 
@@ -54,7 +56,7 @@ export function BasicTable() {
           })
         //   console.log(ans)
           if(ans){
-              setApartment([...ans])
+              dispatch(addData(ans))
           }
           if(e.target.value === ""){
               getData()
@@ -74,7 +76,7 @@ export function BasicTable() {
           })
         //   console.log(ans)
           if(ans){
-              setApartment([...ans])
+              dispatch(addData(ans))
           }
           if(e.target.value === ""){
               getData()
@@ -107,7 +109,7 @@ export function BasicTable() {
             </TableRow>
             </TableHead>
             <TableBody>
-            {apartment.map((row) => (
+            {datasets.map((row) => (
                     <TableRow key={row._id} onClick={()=>{handleRequest(row._id)}}>
                         <TableCell align="center" component="th" scope="row">{row.apartmentId.name}</TableCell>
                         <TableCell align="center">{row.apartmentId.type}</TableCell>
